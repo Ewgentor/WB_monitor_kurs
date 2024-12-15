@@ -4,6 +4,7 @@ import sys
 
 from aiogram import Bot, Dispatcher
 from aiogram_dialog import setup_dialogs
+from aiogram.client.session.aiohttp import AiohttpSession
 
 from config.config import load_config
 from database.db import on_startup
@@ -13,9 +14,10 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 
 async def main():
+    session = AiohttpSession(proxy="http://proxy.server:3128")
     storage = MemoryStorage()
     config = load_config()
-    bot = Bot(token=config.tg_bot.token)
+    bot = Bot(token=config.tg_bot.token, session=session)
     dp = Dispatcher(storage=storage)
     dp.include_routers(
         user_handlers.router,
