@@ -11,6 +11,7 @@ class MySql:
     user: str
     password: str
     host: str
+    db: str
 
 @dataclass
 class Config:
@@ -26,7 +27,7 @@ def load_config(path: str | None = None) -> Config:
 
     return Config(
         tg_bot=TgBot(token=env('BOT_TOKEN')),
-        my_sql=MySql(user=env('mySqlUser'), password=env('mySqlPassword'), host=env('mySqlHost')),
+        my_sql=MySql(user=env('mySqlUser'), password=env('mySqlPassword'), host=env('mySqlHost'),db=env('mySqlDbName')),
         provider_id=env('providerId'),
         shop_article_id=env('shopArticleId')
     )
