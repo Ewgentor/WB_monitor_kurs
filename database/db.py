@@ -8,6 +8,10 @@ from config.config import load_config
 
 
 async def on_startup():
+    """
+    Создание таблиц на запуске бота
+    :return: None
+    """
     cnfg = load_config().my_sql
     conn = await aiomysql.connect(host=cnfg.host, port=3306, user=cnfg.user, password=cnfg.password, db=cnfg.db)
     async with conn.cursor() as cur:
@@ -24,6 +28,11 @@ async def on_startup():
 
 
 async def add_user(user_id: int):
+    """
+    Добавить пользователя базу данных пользователей
+    :param user_id: id пользователя
+    :return: None
+    """
     cnfg = load_config().my_sql
     conn = await aiomysql.connect(host=cnfg.host, port=3306, user=cnfg.user, password=cnfg.password, db=cnfg.db)
     async with conn.cursor() as cur:
@@ -34,6 +43,14 @@ async def add_user(user_id: int):
 
 
 async def add_bookmark(user_id: int, name: str, articul: str, price: float):
+    """
+    Добавить закладку в базу данных
+    :param user_id: id пользователя
+    :param name: Название товара
+    :param articul: Артикул товара
+    :param price: Цена товара
+    :return: None
+    """
     cnfg = load_config().my_sql
     conn = await aiomysql.connect(host=cnfg.host, port=3306, user=cnfg.user, password=cnfg.password, db=cnfg.db)
     async with conn.cursor() as cur:
@@ -44,6 +61,11 @@ async def add_bookmark(user_id: int, name: str, articul: str, price: float):
 
 
 async def get_bookmarks(user_id: str | int) -> tuple:
+    """
+    Получить закладки из базы данных
+    :param user_id: id пользователя
+    :return: tuple данными товаров
+    """
     cnfg = load_config().my_sql
     conn = await aiomysql.connect(host=cnfg.host, port=3306, user=cnfg.user, password=cnfg.password, db=cnfg.db)
     async with conn.cursor() as cur:
@@ -53,7 +75,13 @@ async def get_bookmarks(user_id: str | int) -> tuple:
     return result
 
 
-async def delete_bookmark(user_id, articul):
+async def delete_bookmark(user_id: str | int, articul: str | int):
+    """
+    Удаляет закладку из базы данных
+    :param user_id: id пользователя
+    :param articul: артикул удаляемого товара
+    :return: None
+    """
     cnfg = load_config().my_sql
     conn = await aiomysql.connect(host=cnfg.host, port=3306, user=cnfg.user, password=cnfg.password, db=cnfg.db)
     async with conn.cursor() as cur:

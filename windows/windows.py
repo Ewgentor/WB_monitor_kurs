@@ -9,7 +9,11 @@ from handlers.other_handlers import nonint_articul_error, handle_articul, get_pr
 from states.states import MainSG, ProductSG, BookmarksSG
 
 
-def get_success_window():
+def get_success_window() -> Window:
+    """
+    Выводит окно найденного товара
+    :return: Окно с найденным товаром
+    """
     success_window = Window(
                 StaticMedia(
                     url=Format('{img}'),
@@ -35,7 +39,12 @@ def get_success_window():
     return success_window
 
 
-def get_error_window(code):
+def get_error_window(code: int) -> Window:
+    """
+    Выводит соответствующее коду ошибки окно.
+    :param code: код ошибки
+    :return: окно ошибки
+    """
     msg = {
         -1: ["Неверный артикул", ProductSG.wrong_articul],
         0: ["Товар не найден", ProductSG.not_found],
@@ -54,9 +63,13 @@ def get_error_window(code):
     return error_window
 
 
-def get_main_dialog():
+def get_main_dialog() -> Dialog:
+    """
+    Выводит главный диалог
+    :return: главный диалог
+    """
     main_dialog = Dialog(
-        Window(
+        Window(  # Главное окно
             Const("Добро пожаловать в бота для мониторинга цен в Wildberries! Выберите нужную опцию из представленных ниже кнопок."),
             Row(
                 Start(Const("Добавить товар"), id="add_product", state=ProductSG.add, ),
@@ -72,7 +85,7 @@ def get_main_dialog():
             ),
             state=MainSG.main,
         ),
-        Window(
+        Window(  # Окно документации
             Const("Сделано с любовью этим человеком: @Leedwi"),
             Url(
                 Const("Github"),
@@ -85,9 +98,13 @@ def get_main_dialog():
     return main_dialog
 
 
-def get_product_dialog():
+def get_product_dialog() -> Dialog:
+    """
+    Выводит диалог с товаром
+    :return: диалог с товаром
+    """
     product_dialog = Dialog(
-        Window(
+        Window(  # Окно для ввода артикула товара
             Const("Введите артикул товара:"),
             Row(
                 Start(Const("В меню"), id="menu", state=MainSG.main,)
@@ -96,17 +113,21 @@ def get_product_dialog():
             state=ProductSG.add,
 
         ),
-        get_error_window(-1),
-        get_error_window(0),
-        get_error_window(1),
-        get_success_window(),
+        get_error_window(-1),  # Окно в случае если ввёден неверный артикул
+        get_error_window(0),  # Окно в случае если товар не найден
+        get_error_window(1),  # Окно в случае ошибки бэкэнда
+        get_success_window(),  # Окно если товар был найден
     )
     return product_dialog
 
 
-def get_bookmarks_dialog():
+def get_bookmarks_dialog() -> Dialog:
+    """
+    Выводит диалог с закладками
+    :return: диалог с закладками
+    """
     bookmarks_dialog = Dialog(
-        Window(
+        Window(  # Окно со всеми закладками
             Const("Ваши закладки"),
             ListGroup(
                 Url(Format(
@@ -124,7 +145,7 @@ def get_bookmarks_dialog():
             state=BookmarksSG.bookmarks_list,
             getter=get_bookmars_data,
         ),
-        Window(
+        Window(  # Окно удаления закладок
             Const("Выберите закладку для удаления"),
             ListGroup(
                 Button(Format(

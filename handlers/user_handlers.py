@@ -12,6 +12,12 @@ router = Router()
 
 @router.message(CommandStart())
 async def process_start(message: Message, dialog_manager: DialogManager):
+    """
+    Хендлер пользовательского ввода команды /start
+    :param message: Message
+    :param dialog_manager: DialogManager
+    :return: None
+    """
     await message.answer(text=LEXICON['start'], reply_markup=ReplyKeyboardRemove())
     await add_user(message.chat.id)
     await dialog_manager.start(MainSG.main, mode=StartMode.RESET_STACK)
@@ -19,6 +25,12 @@ async def process_start(message: Message, dialog_manager: DialogManager):
 
 @router.message(Command("help"))
 async def process_help(message: Message, dialog_manager: DialogManager):
+    """
+    Хендлер пользовательского ввода команды /help
+    :param message: Message
+    :param dialog_manager: DialogManager
+    :return: None
+    """
     await message.answer(LEXICON['help'],
                          reply_markup=ReplyKeyboardMarkup(
                              keyboard=[[KeyboardButton(text=LEXICON['start_btn'])]]
@@ -27,5 +39,11 @@ async def process_help(message: Message, dialog_manager: DialogManager):
 
 @router.message(Command("main"))
 async def process_main(message: Message, dialog_manager: DialogManager):
+    """
+    Хендлер пользовательского ввода команды /main
+    :param message: Message
+    :param dialog_manager: DialogManager
+    :return: None
+    """
     await message.answer(LEXICON['return'], reply_markup=ReplyKeyboardRemove())
     await dialog_manager.start(MainSG.main)

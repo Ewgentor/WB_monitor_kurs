@@ -8,17 +8,17 @@ class TgBot:
 
 @dataclass
 class MySql:
-    user: str
-    password: str
-    host: str
-    db: str
+    user: str  # Имя пользователя в MySQL
+    password: str  # Пароль пользователя в MySQL
+    host: str  # Адрес хоста в MySQL
+    db: str  # Название базы данных
 
 @dataclass
 class Config:
     tg_bot: TgBot
     my_sql: MySql
-    provider_id: str
-    shop_article_id: str
+    provider_id: str  # id поставщика услуг оплаты
+    shop_article_id: str  # id артикула магазина
 
 
 def load_config(path: str | None = None) -> Config:

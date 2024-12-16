@@ -3,7 +3,7 @@ import requests
 
 def get_data(article: int) -> dict:
     """
-    Strips product data by its article
+    Парсит данные с внутреннего API Wildberries.
 
     | code -1 - Wrong article
     | code 0 - Product not found
@@ -14,8 +14,22 @@ def get_data(article: int) -> dict:
     if len(article) not in range(7, 10):
         return {"code": -1}
     else:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
+            # 'Accept-Encoding': 'gzip, deflate, br, zstd',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'cross-site',
+            'Priority': 'u=0, i',
+            # Requests doesn't support trailers
+            # 'TE': 'trailers',
+        }
         params = {'appType': '1', 'curr': 'rub', 'dest': '-5518666', "nm": article}
-        r = requests.get('https://card.wb.ru/cards/v2/detail', params=params)
+        r = requests.get('https://card.wb.ru/cards/v2/detail', params=params, headers=headers)
         if r.status_code != 200:
             return {"code": 1}
         else:
@@ -36,7 +50,7 @@ def get_data(article: int) -> dict:
 
 def __get_img(article: str) -> str:
     """
-    Inner function for img parsing
+    Внутренняя функция для поиска изображения товара.
     :param article: product article
     :return: img url
     """
@@ -52,7 +66,7 @@ def __get_img(article: str) -> str:
 
 def __get_price(prod: dict) -> str | None:
     """
-    Inner function for price parsing
+    Внутренняя функция для поиска цены товара.
     :param prod: product data
     :return: price
     """
