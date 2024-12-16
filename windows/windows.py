@@ -73,10 +73,10 @@ def get_main_dialog():
             state=MainSG.main,
         ),
         Window(
-            Const("Аiogram-dialog 3.13.1"),
+            Const("Сделано с любовью этим человеком: @Leedwi"),
             Url(
-                Const("Docs"),
-                Const('https://aiogram-dialog.readthedocs.io/en/stable/index.html')
+                Const("Github"),
+                url=Const('https://github.com/Ewgentor/WB_monitor_kurs')
             ),
             Back(text=Const("Назад")),
             state=MainSG.docs,

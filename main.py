@@ -17,7 +17,10 @@ async def main():
     session = AiohttpSession(proxy="http://proxy.server:3128")
     storage = MemoryStorage()
     config = load_config()
-    bot = Bot(token=config.tg_bot.token, session=session)
+    bot = Bot(
+        token=config.tg_bot.token,
+        # session=session
+    )
     dp = Dispatcher(storage=storage)
     dp.include_routers(
         user_handlers.router,
@@ -33,5 +36,5 @@ async def main():
 
 if __name__ == '__main__':
     print("Бот запущен")
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     asyncio.run(main())
